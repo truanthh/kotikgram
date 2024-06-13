@@ -5,20 +5,36 @@ import { onMounted } from "vue";
 
 const postStore = usePostStore();
 
-const { posts } = storeToRefs(postStore);
+const posts = postStore.posts;
 
-console.log(posts);
+function print() {
+  // console.log(postStore.posts);
+}
+
+function fetch() {
+  // postStore.fetchPosts();
+}
 
 onMounted(() => {
-  // postStore.fetchPosts;
+  postStore.fetchPosts();
 });
 </script>
 
 <template>
-  <div>
-    <button @click="postStore.fetchPosts">Fetch Posts</button>
-    <h3>{{ posts }}</h3>
+  <div class="abc" v-for="post in posts">
+    <div>Название: {{ post.title }}</div>
+    <div>Описание: {{ post.body }}</div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.abc {
+  width: full;
+  height: 100px;
+  background: none;
+  border: solid darkgray 2px;
+  border-radius: 12px;
+  margin: 4px;
+  padding: 4px;
+}
+</style>
