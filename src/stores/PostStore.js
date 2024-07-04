@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import axios from "axios";
 
 export const usePostStore = defineStore("postStore", () => {
   const posts = ref([]);
+  const images = ref([]);
   const counter = ref(0);
 
   const isPostsLoading = ref(false);
@@ -11,26 +12,33 @@ export const usePostStore = defineStore("postStore", () => {
   const postsPerPage = 10;
   const pagesTotal = ref(0);
 
-  const fetchPosts = async () => {
+  const isDark = ref(false);
+
+  const catApiKey =
+    "live_42WMqpulkHdqY3krKopYktUseCHCREhVZZw2LfNnfkorDLEdarm0YzoYgdgU73y5";
+
+  const heartIcon = "src/assets/icons/heart.svg";
+  const heartIcon_white = "src/assets/icons/heart-white.svg";
+  const heartIcon_filled = "src/assets/icons/heart-filled.svg";
+
+  const fetchImages = async () => {
     try {
-      isPostsLoading.value = true;
       const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts",
+        "https://api.thecatapi.com/v1/images/search",
         {
           params: {
-            _page: currentPage.value,
-            _limit: postsPerPage,
+            limit: 20,
+            has_breeds: 1,
+          },
+          headers: {
+            "x-api-key": catApiKey,
           },
         },
       );
-      pagesTotal.value = Math.ceil(
-        response.headers["x-total-count"] / postsPerPage,
-      );
-      posts.value = response.data;
+      images.value = response.data;
     } catch (error) {
       alert(error);
     } finally {
-      isPostsLoading.value = false;
     }
   };
 
@@ -56,5 +64,30 @@ export const usePostStore = defineStore("postStore", () => {
     }
   };
 
-  return { posts, counter, fetchPosts };
+  const removePost = (post) => {
+    posts.value.splice(
+      posts.value.findIndex((el) => el.id === post.id),
+      1,
+    );
+  };
+
+  const addToFav = (image) => {
+    image.favourites = !image.favourites;
+    // console.log(image.favourites);
+  };
+
+  const toggleDark = () => {
+    isDark.value = !isDark.value;
+  };
+
+  return {
+    posts,
+    counter,
+    fetchImages,
+    removePost,
+    images,
+    addToFav,
+    toggleDark,
+    isDark,
+  };
 });

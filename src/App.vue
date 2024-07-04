@@ -3,16 +3,16 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>
-    <div>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="app">
+    <navbar />
+  </div>
 
   <RouterView />
 </template>
 
-<style scoped></style>
+<style>
+@font-face {
+  font-family: play;
+  src: url("@/assets/fonts/PlaywriteITModerna-Regular.ttf");
+}
+</style>
