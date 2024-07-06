@@ -1,17 +1,17 @@
 <script setup>
 import { ref } from "vue";
 
-const long = ref(false);
+const isExpanded = ref(false);
 
-function aleky() {
-  long.value = !long.value;
+function expand() {
+  isExpanded.value = !isExpanded.value;
 }
 </script>
 
 <template>
   <div class="a">
-    <div :class="long ? 'postlong' : 'postshort'" @click="aleky">
-      <div :class="long ? 'textlong' : 'textshort'">
+    <div :class="isExpanded ? 'postlong' : 'postshort'" @click="expand">
+      <div :class="isExpanded ? 'textlong' : 'textshort'">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae
         perspiciatis itaque, tenetur vitae magni dolorem porro sapiente placeat
         velit deserunt harum autem eveniet obcaecati nulla explicabo esse totam
@@ -23,9 +23,7 @@ function aleky() {
         recusandae.
       </div>
 
-      <div class="more" v-show="!long">more</div>
-
-      <!-- <div class="btn"></div> -->
+      <div class="more" v-show="!isExpanded">more</div>
     </div>
   </div>
 </template>
@@ -47,34 +45,13 @@ function aleky() {
   -webkit-line-clamp: 3;
   overflow: hidden;
 }
-/* .postlong { */
-/*   display: flex; */
-/*   padding: 10px 10px 10px 10px; */
-/*   font-size: 20px; */
-/*   font-weight: bold; */
-/*   width: 600px; */
-/*   max-height: 200px; */
-/*   background-color: orange; */
-/*   overflow: hidden; */
-/* } */
-
-/* .postsmall { */
-/*   display: flex; */
-/*   padding: 10px 10px 10px 10px; */
-/*   font-size: 20px; */
-/*   font-weight: bold; */
-/*   width: 600px; */
-/*   max-height: 40px; */
-/*   background-color: orange; */
-/*   overflow: hidden; */
-/* } */
 
 .postlong {
   display: flex;
   width: 600px;
   max-height: 200px;
   padding: 5px 10px 10px 10px;
-  /* background-color: orange; */
+  background-color: orange;
   border: solid 2px gray;
   border-radius: 10px;
 }
@@ -85,7 +62,7 @@ function aleky() {
   width: 600px;
   max-height: 20px;
   padding: 5px 10px 10px 10px;
-  /* background-color: orange; */
+  background-color: orange;
   overflow: hidden;
   border: solid 2px gray;
   border-radius: 10px;

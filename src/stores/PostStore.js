@@ -27,8 +27,8 @@ export const usePostStore = defineStore("postStore", () => {
         "https://api.thecatapi.com/v1/images/search",
         {
           params: {
-            limit: 20,
-            has_breeds: 1,
+            limit: 10,
+            // has_breeds: 1,
           },
           headers: {
             "x-api-key": catApiKey,
@@ -46,18 +46,18 @@ export const usePostStore = defineStore("postStore", () => {
     try {
       currentPage.value++;
       const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts",
+        "https://api.thecatapi.com/v1/images/search",
         {
           params: {
-            _page: currentPage.value,
-            _limit: postsPerPage,
+            limit: postsPerPage,
+            page: currentPage.value,
           },
         },
       );
-      pagesTotal.value = Math.ceil(
-        response.headers["x-total-count"] / postsPerPage,
-      );
-      posts.value = [...posts.value, ...response.data];
+      // pagesTotal.value = Math.ceil(
+      //   response.headers["x-total-count"] / postsPerPage,
+      // );
+      images.value = [...images.value, ...response.data];
     } catch (error) {
       alert(error);
     } finally {
@@ -89,5 +89,6 @@ export const usePostStore = defineStore("postStore", () => {
     addToFav,
     toggleDark,
     isDark,
+    loadMorePosts,
   };
 });

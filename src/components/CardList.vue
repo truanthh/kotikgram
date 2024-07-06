@@ -21,7 +21,10 @@ onMounted(() => {
     v-bind:class="postStore.isDark ? 'cardlist_dark' : 'cardlist_light'"
     v-show="images.length > 0"
   >
-    <Card v-for="image in images" v-bind:image="image" v-bind:key="image.id" />
+    <Card v-for="image of images" v-bind:image="image" v-bind:key="image.id" />
+    <div v-intersection="postStore.loadMorePosts" class="intersection">
+      <!-- this is intersection observer -->
+    </div>
   </div>
   <h2 v-show="images.length === 0" style="color: red">
     Адыхай, фотокарточек сегодня больше не будет! :(
@@ -57,5 +60,11 @@ onMounted(() => {
   background-color: black;
   padding-top: 30px;
   gap: 30px;
+}
+
+.intersection {
+  width: 600px;
+  height: 200px;
+  /* background-color: orange; */
 }
 </style>
