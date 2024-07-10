@@ -56,13 +56,13 @@ const iconSun = "src/assets/icons/sun.svg";
 
 <style scoped>
 .navbar {
-  z-index: 100;
+  z-index: 10;
   display: flex;
   position: fixed;
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  height: 60px;
+  height: 55px;
   left: 0px;
   right: 0px;
   top: 0px;

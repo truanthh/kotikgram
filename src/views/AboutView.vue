@@ -9,28 +9,45 @@ function expand() {
 </script>
 
 <template>
-  <div class="a">
-    <div :class="isExpanded ? 'postlong' : 'postshort'" @click="expand">
-      <div :class="isExpanded ? 'textlong' : 'textshort'">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae
-        perspiciatis itaque, tenetur vitae magni dolorem porro sapiente placeat
-        velit deserunt harum autem eveniet obcaecati nulla explicabo esse totam
-        fugit accusantium architecto officia? Dolores ea incidunt maxime,
-        pariatur sunt ipsa dolore tempore ad saepe rerum cum distinctio eligendi
-        soluta omnis iste accusamus odio maiores ducimus officia in tenetur
-        ipsam? A labore sunt provident, maiores expedita beatae quae est porro
-        ea quos. Voluptates eum et itaque minima error magnam dignissimos, sit
-        recusandae.
-      </div>
+  <!-- <div class="a"> -->
+  <!--   <div :class="isExpanded ? 'postlong' : 'postshort'" @click="expand"> -->
+  <!--     <div :class="isExpanded ? 'textlong' : 'textshort'"> -->
+  <!--       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae -->
+  <!--       perspiciatis itaque, tenetur vitae magni dolorem porro sapiente placeat -->
+  <!--       velit deserunt harum autem eveniet obcaecati nulla explicabo esse totam -->
+  <!--       fugit accusantium architecto officia? Dolores ea incidunt maxime, -->
+  <!--       pariatur sunt ipsa dolore tempore ad saepe rerum cum distinctio eligendi -->
+  <!--       soluta omnis iste accusamus odio maiores ducimus officia in tenetur -->
+  <!--       ipsam? A labore sunt provident, maiores expedita beatae quae est porro -->
+  <!--       ea quos. Voluptates eum et itaque minima error magnam dignissimos, sit -->
+  <!--       recusandae. -->
+  <!--     </div> -->
+  <!---->
+  <!--     <div class="more" v-show="!isExpanded">more</div> -->
+  <!--   </div> -->
+  <!-- </div> -->
 
-      <div class="more" v-show="!isExpanded">more</div>
-    </div>
+  <div class="a">
+    <div class="testflex">aleky</div>
   </div>
 </template>
 
 <style scoped>
+.testflex {
+  display: flex;
+  position: relative;
+  background-color: orange;
+  width: 80%;
+  height: 30%;
+  margin: 0 auto;
+  margin-top: 100px;
+  /* max-width: 600px; */
+  height: 400px;
+  border: gray 2px solid;
+}
+
 .a {
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   flex-direction: column;
   align-items: center;

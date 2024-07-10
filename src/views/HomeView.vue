@@ -14,4 +14,8 @@ onMounted(() => {
   <CardList v-bind:images="postStore.images" />
 </template>
 
-<style scoped></style>
+<style scoped>
+/* * { */
+/*   background-color: teal; */
+/* } */
+</style>
