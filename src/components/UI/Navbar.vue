@@ -16,9 +16,9 @@ const iconSun = "src/assets/icons/sun.svg";
 </script>
 
 <template>
-  <div :class="{ light: !postStore.isDark, dark: postStore.isDark }">
-    <div class="navbar">
-      <div class="kotikgram">
+  <div class="navbar">
+    <div class="navbar__content">
+      <div class="navbar__logo">
         <h2 @click="$router.push('/home')">Kotikgram</h2>
       </div>
 
@@ -40,81 +40,85 @@ const iconSun = "src/assets/icons/sun.svg";
           />
         </a>
       </div>
+    </div>
 
-      <!-- trying to preload this xd -->
-      <div v-show="false" aria-hidden="true">
-        <img :src="iconCompassWhite" />
-        <img :src="iconCompass" />
-        <img :src="iconMoon" />
-        <img :src="iconSun" />
-        <img :src="iconGithub" />
-        <img :src="iconGithubWhite" />
-      </div>
+    <!-- trying to preload this xd -->
+    <div v-show="false" aria-hidden="true">
+      <img :src="iconCompassWhite" />
+      <img :src="iconCompass" />
+      <img :src="iconMoon" />
+      <img :src="iconSun" />
+      <img :src="iconGithub" />
+      <img :src="iconGithubWhite" />
     </div>
   </div>
 </template>
 
 <style scoped>
 .navbar {
-  z-index: 10;
+  z-index: 2000;
   display: flex;
-  position: fixed;
-  justify-content: space-evenly;
-  align-items: center;
+  position: sticky;
+  top: 0;
+  height: 3.5rem;
   width: 100%;
-  height: 55px;
-  left: 0px;
-  right: 0px;
-  top: 0px;
+  justify-content: center;
+  box-sizing: border-box;
   background-color: var(--navbar-bg);
   border-bottom: var(--navbar-bd);
 }
 
-.navbar__btns {
+.navbar__content {
   display: flex;
-  height: 25px;
-  gap: 16px;
-  -webkit-user-select: none;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 56rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  box-sizing: border-box;
+  /* background-color: gray; */
 }
 
-.kotikgram {
+.navbar__btns {
+  display: flex;
+  height: 40px;
+  gap: 1rem;
+  -webkit-user-select: none;
+  /* background-color: orange; */
+  box-sizing: border-box;
+}
+
+.navbar__logo {
   font-family: play;
   font-size: 14px;
   cursor: pointer;
-  color: var(--kotikgram-color);
+  color: var(--navbarlogo-color);
   /* margin-left: 10px; */
-}
-
-.light {
-  --navbar-bg: white;
-  --navbar-bd: solid 1px lightgray;
-  --kotikgram-color: black;
-}
-
-.dark {
-  --navbar-bg: #161716;
-  --navbar-bd: solid 1px #3d3d3d;
-  --kotikgram-color: white;
 }
 
 .compass {
   height: 25px;
   width: 25px;
-  align-self: center;
   cursor: pointer;
+  margin: auto;
 }
 
 .moon {
   height: 25px;
   width: 25px;
-  align-self: center;
   cursor: pointer;
+  margin: auto;
 }
 
 .github {
   height: 25px;
   width: 25px;
-  align-self: center;
   cursor: pointer;
+  margin: auto;
+}
+
+a {
+  display: flex;
 }
 </style>

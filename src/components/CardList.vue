@@ -49,6 +49,13 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
+@media (max-width: 640px) {
+  .cardlist {
+    gap: 0rem;
+    padding: 0rem;
+  }
+}
+
 .light {
   --cardlist-bg: #f0f8ff;
 }

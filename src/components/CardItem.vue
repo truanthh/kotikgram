@@ -28,7 +28,7 @@ const descExpandable = computed(() => {
   <div v-bind:class="{ light: !postStore.isDark, dark: postStore.isDark }">
     <div class="card">
       <div class="card__title" v-if="image">Lorem Ipsum</div>
-      <!-- <div class="titletext" v-if="image.breeds">{{ image.breeds[0].name }}</div> -->
+      <!-- <div class="card-titletext" v-if="image.breeds">{{ image.breeds[0].name }}</div> -->
 
       <div class="card__media">
         <img class="card__img" :src="image.url" />
@@ -70,7 +70,7 @@ const descExpandable = computed(() => {
 
       <div class="description">
         <div :class="descExpandable">
-          <div :class="isExpanded ? 'desclongtext' : 'descshorttext'">
+          <div :class="isExpanded ? 'card-desclongtext' : 'card-descshorttext'">
             <!-- {{ image.breeds[0].description }} -->
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nisi
             itaque delectus a esse dolores id quaerat accusamus deserunt minima
@@ -108,17 +108,17 @@ const descExpandable = computed(() => {
 .light {
   --card-bg: white;
   --card-bd: solid 1px lightgray;
-  --titletext-color: black;
-  --desclongtext-color: black;
-  --descshorttext-color: black;
+  --card-titletext-color: black;
+  --card-desclongtext-color: black;
+  /* --card-descshorttext-color: black; */
 }
 
 .dark {
   --card-bg: #161716;
-  --card-bd: solid 1px #3d3d3d;
-  --titletext-color: white;
-  --desclongtext-color: white;
-  --descshorttext-color: white;
+  --card-bd: solid 1px #262626;
+  --card-titletext-color: white;
+  --card-desclongtext-color: white;
+  /* --card-descshorttext-color: white; */
 }
 
 .card {
@@ -126,15 +126,6 @@ const descExpandable = computed(() => {
   line-height: inherit;
   border-radius: 0.25rem;
   border-width: 1px;
-  /* background-color: orange; */
-  /* position: relative; */
-  /* width: 100%; */
-  /* padding-top: 100%; */
-  /* margin: 0 auto; */
-  /* max-width: 600px; */
-  /* max-height: 1000px; */
-  /* justify-content: start; */
-  /* text-align: center; */
   background-color: var(--card-bg);
   border: var(--card-bd);
 }
@@ -142,17 +133,8 @@ const descExpandable = computed(() => {
 .card__media {
   position: relative;
   width: 100%;
-  /* box-sizing: border-box; */
   padding-top: 100%;
-  /* margin: 0 auto; */
-  /* max-width: 600px; */
-  /* max-height: 1000px; */
-  /* justify-content: start; */
   line-height: inherit;
-  /* text-align: center; */
-  /* border-radius: 4px; */
-  /* background-color: var(--card-bg); */
-  /* border: var(--card-bd); */
 }
 
 .card__img {
@@ -175,7 +157,7 @@ const descExpandable = computed(() => {
   line-height: 1.25rem;
   font-weight: 500;
   z-index: 2;
-  color: var(--titletext-color);
+  color: var(--card-titletext-color);
   /* background-color: orange; */
 }
 
@@ -183,9 +165,12 @@ const descExpandable = computed(() => {
   display: flex;
   height: 45px;
   align-items: center;
-  padding-left: 15px;
+  /* padding: 0.5rem 0.5rem 0rem 0.5rem; */
+  margin: 0px 16px 0px 16px;
+  box-sizing: border-box;
   gap: 8px;
   -webkit-user-select: none;
+  /* background-color: orange; */
 }
 .icon {
   position: relative;
@@ -193,9 +178,11 @@ const descExpandable = computed(() => {
   justify-content: center;
   align-items: center;
   margin: 10px 0px 8px;
+  /* padding: 0.5rem; */
   height: 30px;
   width: 30px;
   cursor: pointer;
+  /* background-color: gray; */
 }
 .icon img {
   position: absolute;
@@ -217,6 +204,7 @@ const descExpandable = computed(() => {
   width: 100%;
   max-height: 100%;
   padding: 0px 16px 16px 16px;
+  /* align-items: center; */
 }
 .descshort {
   display: flex;
@@ -227,18 +215,18 @@ const descExpandable = computed(() => {
   overflow: hidden;
   /* background-color: teal; */
 }
-.desclongtext {
-  color: var(--descshorttext-color);
+.card-desclongtext {
+  color: var(--card-descshorttext-color);
   text-align: start;
   font-size: 14px;
   text-overflow: ellipsis;
   overflow: hidden;
   max-height: 290px;
   white-space: pre-line;
+  /* background-color: gray; */
 }
-.descshorttext {
-  color: var(--descshorttext-color);
-  max-width: 540px;
+.card-descshorttext {
+  color: var(--card-descshorttext-color);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -248,5 +236,11 @@ const descExpandable = computed(() => {
   font-size: 14px;
   color: gray;
   cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .card {
+    border: none;
+  }
 }
 </style>

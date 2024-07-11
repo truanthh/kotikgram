@@ -19,12 +19,16 @@ const postStore = usePostStore();
   font-family: play;
   src: url("@/assets/fonts/PlaywriteITModerna-Regular.ttf");
 }
+
 main {
-  position: absolute;
-  top: 55px;
-  left: 0;
-  right: 0;
-  background-color: var(--body-bg);
+  background-color: var(--main-bgcolor);
+  color: var(--main-color);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family:
     system-ui,
     -apple-system,
@@ -40,9 +44,17 @@ main {
 }
 
 .light {
-  --body-bg: #f0f8ff;
+  --main-bgcolor: #f0f8ff;
+  --main-color: black;
+  --navbar-bg: white;
+  --navbar-bd: solid 1px lightgray;
+  --navbarlogo-color: black;
 }
 .dark {
-  --body-bg: black;
+  --main-bgcolor: black;
+  --main-color: white;
+  --navbar-bg: #161716;
+  --navbar-bd: solid 1px #262626;
+  --navbarlogo-color: white;
 }
 </style>
