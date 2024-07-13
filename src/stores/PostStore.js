@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, toRaw } from "vue";
 import axios from "axios";
+import { addItems, getItems, hasItems } from "@/indexedDB";
 
 export const usePostStore = defineStore("postStore", () => {
   const posts = ref([]);
@@ -21,13 +22,36 @@ export const usePostStore = defineStore("postStore", () => {
   const heartIcon_white = "src/assets/icons/heart-white.svg";
   const heartIcon_filled = "src/assets/icons/heart-filled.svg";
 
+  const initializeImages = async () => {
+    try {
+      const hasData = await hasItems();
+      if (hasData) {
+        await loadImages();
+      } else {
+        await fetchImages();
+      }
+    } catch (error) {
+      console.error("Error initializing images", error);
+    }
+  };
+
+  const loadImages = async () => {
+    try {
+      const items = await getItems();
+      images.value = [...items];
+      console.log("Images loaded from IndexedDB", images.value);
+    } catch (error) {
+      console.error("Error loading images from IndexedDB", error);
+    }
+  };
+
   const fetchImages = async () => {
     try {
       const response = await axios.get(
         "https://api.thecatapi.com/v1/images/search",
         {
           params: {
-            limit: 10,
+            limit: 18,
             // has_breeds: 1,
           },
           headers: {
@@ -36,6 +60,7 @@ export const usePostStore = defineStore("postStore", () => {
         },
       );
       images.value = response.data;
+      await addItems(toRaw(images.value));
     } catch (error) {
       alert(error);
     } finally {
@@ -43,25 +68,22 @@ export const usePostStore = defineStore("postStore", () => {
   };
 
   const loadMorePosts = async () => {
-    try {
-      currentPage.value++;
-      const response = await axios.get(
-        "https://api.thecatapi.com/v1/images/search",
-        {
-          params: {
-            limit: postsPerPage,
-            page: currentPage.value,
-          },
-        },
-      );
-      // pagesTotal.value = Math.ceil(
-      //   response.headers["x-total-count"] / postsPerPage,
-      // );
-      images.value = [...images.value, ...response.data];
-    } catch (error) {
-      alert(error);
-    } finally {
-    }
+    // try {
+    //   currentPage.value++;
+    //   const response = await axios.get(
+    //     "https://api.thecatapi.com/v1/images/search",
+    //     {
+    //       params: {
+    //         limit: postsPerPage,
+    //         page: currentPage.value,
+    //       },
+    //     },
+    //   );
+    //   images.value = [...images.value, ...response.data];
+    // } catch (error) {
+    //   alert(error);
+    // } finally {
+    // }
   };
 
   const removePost = (post) => {
@@ -83,12 +105,14 @@ export const usePostStore = defineStore("postStore", () => {
   return {
     posts,
     counter,
-    fetchImages,
     removePost,
     images,
     addToFav,
     toggleDark,
     isDark,
     loadMorePosts,
+    fetchImages,
+    loadImages,
+    initializeImages,
   };
 });

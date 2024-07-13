@@ -1,8 +1,6 @@
 <script setup>
 import CardItem from "./CardItem.vue";
 import { onMounted } from "vue";
-import { usePostStore } from "@/stores/PostStore";
-const postStore = usePostStore();
 
 const props = defineProps({
   images: {
@@ -17,20 +15,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div :class="{ light: !postStore.isDark, dark: postStore.isDark }">
-    <div class="cardlist" v-show="images.length > 0">
-      <CardItem
-        v-for="image of images"
-        v-bind:image="image"
-        v-bind:key="image.id"
-      />
-      <div v-intersection="postStore.loadMorePosts" class="intersection">
-        <!-- this is intersection observer -->
-      </div>
-    </div>
+  <div class="cardlist" v-show="images.length > 0">
+    <CardItem
+      v-for="image of images"
+      v-bind:image="image"
+      v-bind:key="image.id"
+    />
   </div>
   <div class="loading" v-show="images.length === 0">
-    Адыхай, фотокарточек сегодня больше не будет! :(
+    Pictures are loading... :)
   </div>
 </template>
 
@@ -56,24 +49,9 @@ onMounted(() => {
   }
 }
 
-.light {
-  --cardlist-bg: #f0f8ff;
-}
-
-.dark {
-  --cardlist-bg: black;
-}
-
 .loading {
   font-size: 40px;
   color: red;
   text-align: center;
-}
-
-/* probably need to remove constant width and height */
-.intersection {
-  width: 600px;
-  height: 200px;
-  /* background-color: orange; */
 }
 </style>
