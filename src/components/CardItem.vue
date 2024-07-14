@@ -27,7 +27,7 @@ const descExpandable = computed(() => {
 <template>
   <div v-bind:class="{ light: !postStore.isDark, dark: postStore.isDark }">
     <div class="card">
-      <div class="card__title" v-if="image">Lorem Ipsum</div>
+      <div class="card__title" v-if="image">{{ image.id }}</div>
       <!-- <div class="card-titletext" v-if="image.breeds">{{ image.breeds[0].name }}</div> -->
 
       <div class="card__media">

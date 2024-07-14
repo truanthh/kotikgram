@@ -6,14 +6,15 @@ import CardList from "@/components/CardList.vue";
 const postStore = usePostStore();
 
 onMounted(() => {
-  postStore.initializeImages();
+  // postStore.initializeImages();
+  // postStore.fetchImages();
 });
 </script>
 
 <template>
   <!-- <button @click="postStore.saveData">save data</button> -->
   <CardList v-bind:images="postStore.images" />
-  <div v-intersection="postStore.loadMorePosts" class="intersection">
+  <div v-intersection="postStore.fetchMoreImages" class="intersection">
     <!-- this is intersection observer -->
   </div>
 </template>

@@ -24,7 +24,7 @@ const postStore = usePostStore();
     </div>
   </div>
 
-  <div v-intersection="postStore.loadMorePosts" class="intersection">
+  <div v-intersection="postStore.fetchMoreImages" class="intersection">
     <!-- this is intersection observer -->
   </div>
 </template>

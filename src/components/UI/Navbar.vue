@@ -26,6 +26,11 @@ const iconSun = "src/assets/icons/sun.svg";
         <img
           class="compass"
           :src="postStore.isDark ? iconCompassWhite : iconCompass"
+          @click="$router.push('/favourites')"
+        />
+        <img
+          class="compass"
+          :src="postStore.isDark ? iconCompassWhite : iconCompass"
           @click="$router.push('/explore')"
         />
         <img

@@ -17,6 +17,11 @@ const router = createRouter({
       component: () => import("../views/ExploreView.vue"),
     },
     {
+      path: "/favourites",
+      name: "favourites",
+      component: () => import("../views/FavouritesView.vue"),
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting
