@@ -18,10 +18,6 @@ export const usePostStore = defineStore("postStore", () => {
   const catApiKey =
     "live_42WMqpulkHdqY3krKopYktUseCHCREhVZZw2LfNnfkorDLEdarm0YzoYgdgU73y5";
 
-  const heartIcon = "src/assets/icons/heart.svg";
-  const heartIcon_white = "src/assets/icons/heart-white.svg";
-  const heartIcon_filled = "src/assets/icons/heart-filled.svg";
-
   const initializeImages = async () => {
     try {
       const hasData = await hasItems();
