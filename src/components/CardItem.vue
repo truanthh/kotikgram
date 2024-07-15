@@ -8,7 +8,6 @@ const props = defineProps({
   image: {
     id: String,
     url: String,
-    favourite: Object,
     breeds: Array,
   },
 });
@@ -22,6 +21,16 @@ const expandDesc = () => {
 const descExpandable = computed(() => {
   return isExpanded.value ? "desclong" : "descshort";
 });
+
+const favAction = (image) => {
+  // console.log(`favAction trying to return method according to object`);
+  // console.log(image);
+  return image.isLiked ? postStore.delFav(image) : postStore.addFav(image);
+};
+
+// const favAction = computed((image) => {
+//   return image.favourite ? postStore.delFav : postStore.addFav;
+// });
 </script>
 
 <template>
@@ -35,23 +44,20 @@ const descExpandable = computed(() => {
       </div>
 
       <div class="card__btns">
-        <div class="icon" @click="postStore.addToFav(image)">
+        <div class="icon" @click="favAction(image)">
           <img
             class="hoveron"
-            v-show="!postStore.isDark && !image.favourites"
+            v-show="!postStore.isDark && !image.isLiked"
             src="@/assets/icons/heart.svg"
           />
           <img
             class="hoveron"
-            v-show="postStore.isDark && !image.favourites"
+            v-show="postStore.isDark && !image.isLiked"
             src="@/assets/icons/heart-white.svg"
           />
           <!-- <img src="@/assets/icons/heart.svg" /> -->
           <Transition name="bounce">
-            <img
-              v-show="image.favourites"
-              src="@/assets/icons/heart-filled.svg"
-            />
+            <img v-show="image.isLiked" src="@/assets/icons/heart-filled.svg" />
           </Transition>
         </div>
         <div class="icon">

@@ -28,11 +28,11 @@ const iconSun = "src/assets/icons/sun.svg";
           :src="postStore.isDark ? iconCompassWhite : iconCompass"
           @click="$router.push('/favourites')"
         />
-        <img
-          class="compass"
-          :src="postStore.isDark ? iconCompassWhite : iconCompass"
-          @click="$router.push('/explore')"
-        />
+        <!-- <img -->
+        <!--   class="compass" -->
+        <!--   :src="postStore.isDark ? iconCompassWhite : iconCompass" -->
+        <!--   @click="$router.push('/explore')" -->
+        <!-- /> -->
         <img
           class="moon"
           :src="postStore.isDark ? iconSun : iconMoon"

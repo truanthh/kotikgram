@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive, toRaw } from "vue";
+import { ref, reactive, toRaw, watch } from "vue";
 import axios from "axios";
 import { addItems, getItems, hasItems } from "@/indexedDB";
 
@@ -16,6 +16,18 @@ export const usePostStore = defineStore("postStore", () => {
   const pagesTotal = ref(0);
 
   const isDark = ref(false);
+
+  const updateIsLiked = () => {
+    images.value.forEach((image) => {
+      image.isLiked = favourites.value.some((fav) => fav.image_id === image.id);
+      let fav = favourites.value.find((fav) => image.id === fav.image_id);
+      if (fav !== undefined) {
+        image.fav_id = fav.id;
+      }
+    });
+  };
+
+  watch(favourites, updateIsLiked, { deep: true });
 
   // this is not used atm cuz i want new random images every time
   const initializeImages = async () => {
@@ -85,8 +97,14 @@ export const usePostStore = defineStore("postStore", () => {
     }
   };
 
-  const addToFav = async (image) => {
+  const toggleLike = (image) => {
+    image.isLiked = !image.isLiked;
+  };
+
+  const addFav = async (image) => {
+    toggleLike(image);
     try {
+      console.log("adding image to fav");
       const newFavourite = await axios.post(
         "https://api.thecatapi.com/v1/favourites",
         { image_id: image.id },
@@ -95,7 +113,21 @@ export const usePostStore = defineStore("postStore", () => {
     } catch (error) {
       alert(error);
     } finally {
-      // image.favourites = !image.favourites;
+    }
+  };
+
+  const delFav = async (image) => {
+    // toggleLike(image);
+    favourites.value = favourites.value.filter((el) => el.id !== image.id);
+    try {
+      console.log(`deleting image from fav ${image.fav_id.toString()}`);
+      const newFavourite = await axios.delete(
+        `https://api.thecatapi.com/v1/favourites/${image.fav_id.toString()}`,
+        { headers: { "x-api-key": catApiKey } },
+      );
+    } catch (error) {
+      alert(error);
+    } finally {
     }
   };
 
@@ -130,9 +162,11 @@ export const usePostStore = defineStore("postStore", () => {
     favourites,
     toggleDark,
     isDark,
-    addToFav,
     fetchMoreImages,
     fetchImages,
+    addFav,
+    delFav,
     fetchFavourites,
+    toggleLike,
   };
 });
