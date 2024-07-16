@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive, toRaw, watch } from "vue";
+import { ref, reactive, toRaw, watch, computed } from "vue";
 import axios from "axios";
 import { addItems, getItems, hasItems } from "@/indexedDB";
 
@@ -17,40 +17,85 @@ export const usePostStore = defineStore("postStore", () => {
 
   const isDark = ref(false);
 
-  const updateIsLiked = () => {
-    images.value.forEach((image) => {
-      image.isLiked = favourites.value.some((fav) => fav.image_id === image.id);
-      let fav = favourites.value.find((fav) => image.id === fav.image_id);
-      if (fav !== undefined) {
-        image.fav_id = fav.id;
-      }
+  const allImages = computed(() => {
+    return images.value.map((image) => {
+      const isLiked = favourites.value.some((fav) => {
+        return fav.image !== undefined ? fav.image.id === image.id : false;
+      });
+      return { ...image, isLiked };
     });
-  };
+  });
 
-  watch(favourites, updateIsLiked, { deep: true });
+  // const likedImages = computed(() => {
+  //   return favourites.value.map((fav) => ({
+  //     ...fav.image,
+  //     isLiked: true,
+  //     favID: fav.id,
+  //   }));
+  // });
 
-  // this is not used atm cuz i want new random images every time
-  const initializeImages = async () => {
+  const addFav = async (image) => {
+    // adding to local array
+    image.isLiked = true;
+
     try {
-      const hasData = await hasItems();
-      if (hasData) {
-        await loadImages();
-      } else {
-        await fetchImages();
-      }
+      const response = await axios.post(
+        "https://api.thecatapi.com/v1/favourites",
+        { image_id: image.id },
+        { headers: { "x-api-key": catApiKey } },
+      );
+      favourites.value.push({
+        id: response.data.id,
+        image_id: image.id,
+        image: image,
+      });
     } catch (error) {
-      console.error("Error initializing images", error);
+      alert(error);
+    } finally {
     }
   };
 
-  // this is not used atm cuz i want new random images every time
-  const loadImages = async () => {
+  const delFav = async (image) => {
+    // deleting from local array
+    image.isLiked = false;
+
     try {
-      const items = await getItems();
-      images.value = [...items];
-      console.log("Images loaded from IndexedDB", images.value);
+      const fav = favourites.value.find((el) => el.image.id === image.id);
+      await axios.delete(`https://api.thecatapi.com/v1/favourites/${fav.id}`, {
+        headers: { "x-api-key": catApiKey },
+      });
+      favourites.value = favourites.value.filter(
+        (fav) => fav.image.id !== image.id,
+      );
     } catch (error) {
-      console.error("Error loading images from IndexedDB", error);
+      alert(error);
+    } finally {
+    }
+  };
+
+  const fetchFavourites = async () => {
+    try {
+      console.log("fetching favourites...");
+      const response = await axios.get(
+        "https://api.thecatapi.com/v1/favourites",
+        {
+          params: {
+            limit: 50,
+            order: "DESC",
+          },
+          headers: {
+            "x-api-key": catApiKey,
+          },
+        },
+      );
+      // favourites.value = response.data.map((el) => ({
+      //   ...el.image,
+      //   isLiked: true,
+      // }));
+      favourites.value = response.data;
+    } catch (error) {
+      alert(error);
+    } finally {
     }
   };
 
@@ -79,6 +124,7 @@ export const usePostStore = defineStore("postStore", () => {
 
   const fetchMoreImages = async () => {
     try {
+      console.log("trying to get more images");
       currentPage.value++;
       const response = await axios.get(
         "https://api.thecatapi.com/v1/images/search",
@@ -97,76 +143,22 @@ export const usePostStore = defineStore("postStore", () => {
     }
   };
 
-  const toggleLike = (image) => {
-    image.isLiked = !image.isLiked;
-  };
-
-  const addFav = async (image) => {
-    toggleLike(image);
-    try {
-      console.log("adding image to fav");
-      const newFavourite = await axios.post(
-        "https://api.thecatapi.com/v1/favourites",
-        { image_id: image.id },
-        { headers: { "x-api-key": catApiKey } },
-      );
-    } catch (error) {
-      alert(error);
-    } finally {
-    }
-  };
-
-  const delFav = async (image) => {
-    // toggleLike(image);
-    favourites.value = favourites.value.filter((el) => el.id !== image.id);
-    try {
-      console.log(`deleting image from fav ${image.fav_id.toString()}`);
-      const newFavourite = await axios.delete(
-        `https://api.thecatapi.com/v1/favourites/${image.fav_id.toString()}`,
-        { headers: { "x-api-key": catApiKey } },
-      );
-    } catch (error) {
-      alert(error);
-    } finally {
-    }
-  };
-
-  const fetchFavourites = async () => {
-    try {
-      const response = await axios.get(
-        "https://api.thecatapi.com/v1/favourites",
-        {
-          params: {
-            limit: 9,
-          },
-          headers: {
-            "x-api-key": catApiKey,
-          },
-        },
-      );
-      favourites.value = response.data;
-    } catch (error) {
-      alert(error);
-    } finally {
-    }
-  };
-
   const toggleDark = () => {
     isDark.value = !isDark.value;
   };
 
   return {
-    loadImages,
-    initializeImages,
+    isDark,
+    toggleDark,
+    //----------
     images,
     favourites,
-    toggleDark,
-    isDark,
     fetchMoreImages,
     fetchImages,
+    fetchFavourites,
     addFav,
     delFav,
-    fetchFavourites,
-    toggleLike,
+    allImages,
+    // likedImages,
   };
 });

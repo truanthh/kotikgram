@@ -7,6 +7,11 @@ defineOptions({
   name: "Navbar",
 });
 
+const debugging = () => {
+  console.log(postStore.allImages);
+  console.log(postStore.favourites);
+};
+
 const iconCompass = "src/assets/icons/compass.svg";
 const iconCompassWhite = "src/assets/icons/compass-white.svg";
 const iconGithub = "src/assets/icons/github.svg";
@@ -23,6 +28,8 @@ const iconSun = "src/assets/icons/sun.svg";
       </div>
 
       <div class="navbar__btns">
+        <button @click="debugging">DEBUG</button>
+
         <img
           class="compass"
           :src="postStore.isDark ? iconCompassWhite : iconCompass"

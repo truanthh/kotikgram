@@ -10,6 +10,10 @@ const props = defineProps({
     url: String,
     breeds: Array,
   },
+  toggleLike: {
+    type: Function,
+    required: true,
+  },
 });
 
 const isExpanded = ref(false);
@@ -22,15 +26,9 @@ const descExpandable = computed(() => {
   return isExpanded.value ? "desclong" : "descshort";
 });
 
-const favAction = (image) => {
-  // console.log(`favAction trying to return method according to object`);
-  // console.log(image);
-  return image.isLiked ? postStore.delFav(image) : postStore.addFav(image);
-};
-
-// const favAction = computed((image) => {
-//   return image.favourite ? postStore.delFav : postStore.addFav;
-// });
+// const favAction = (image) => {
+//   return image.isLiked ? postStore.delFav(image) : postStore.addFav(image);
+// };
 </script>
 
 <template>
@@ -44,7 +42,7 @@ const favAction = (image) => {
       </div>
 
       <div class="card__btns">
-        <div class="icon" @click="favAction(image)">
+        <div class="icon" @click="toggleLike(image)">
           <img
             class="hoveron"
             v-show="!postStore.isDark && !image.isLiked"

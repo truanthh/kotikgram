@@ -4,32 +4,37 @@ import { usePostStore } from "@/stores/PostStore";
 import CardList from "@/components/CardList.vue";
 const postStore = usePostStore();
 
-function syncFav() {
+function debugging() {
+  // console.log(postStore.favourites);
   console.log(postStore.favourites);
-  console.log(postStore.images);
 }
+
+const toggleLike = (image) => {
+  console.log("this is toggleLike from FavouritesView!!");
+};
 
 onMounted(() => {
   postStore.fetchFavourites();
+  // const favouritesImages = postStore.favourites.map((el) => el.image);
 });
 
-// restucturing an object to make sure it fits cardlist component
-const favImages = computed(() => {
-  return postStore.favourites.map((el) => ({
-    ...el,
-    url: el.image.url,
-    fav_id: el.id,
-    isLiked: true,
-  }));
-});
+// const favouritesImages = computed(() => {
+//   return postStore.favourites.map((el) => el.image);
+// });
+
+// const favouritesImages = () => {
+//   return postStore.favourites.map((el) => el.image);
+// };
 </script>
 
 <template>
   <div class="info">
-    <h1>DISPLAY FAVOURITES HERE:</h1>
-    <button @click="syncFav">SYNC FAVOURITES</button>
+    <!-- <h1>DISPLAY FAVOURITES HERE:</h1> -->
   </div>
-  <CardList v-bind:images="favImages" />
+  <CardList
+    v-bind:images="postStore.favourites"
+    v-bind:toggleLike="toggleLike"
+  />
 </template>
 
 <style scoped>
