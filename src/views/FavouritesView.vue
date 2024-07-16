@@ -10,21 +10,18 @@ function debugging() {
 }
 
 const toggleLike = (image) => {
-  console.log("this is toggleLike from FavouritesView!!");
+  if (image.isLiked) {
+    // const fav = postStore.favourites.find((fav) => fav.image.id === image.id);
+    postStore.delFav(image);
+  } else {
+    postStore.addFav(image);
+  }
 };
 
 onMounted(() => {
   postStore.fetchFavourites();
   // const favouritesImages = postStore.favourites.map((el) => el.image);
 });
-
-// const favouritesImages = computed(() => {
-//   return postStore.favourites.map((el) => el.image);
-// });
-
-// const favouritesImages = () => {
-//   return postStore.favourites.map((el) => el.image);
-// };
 </script>
 
 <template>
@@ -32,7 +29,7 @@ onMounted(() => {
     <!-- <h1>DISPLAY FAVOURITES HERE:</h1> -->
   </div>
   <CardList
-    v-bind:images="postStore.favourites"
+    v-bind:images="postStore.likedImages"
     v-bind:toggleLike="toggleLike"
   />
 </template>

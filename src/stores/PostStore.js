@@ -26,13 +26,13 @@ export const usePostStore = defineStore("postStore", () => {
     });
   });
 
-  // const likedImages = computed(() => {
-  //   return favourites.value.map((fav) => ({
-  //     ...fav.image,
-  //     isLiked: true,
-  //     favID: fav.id,
-  //   }));
-  // });
+  const likedImages = computed(() => {
+    return favourites.value.map((fav) => ({
+      ...fav.image,
+      isLiked: true,
+      favID: fav.id,
+    }));
+  });
 
   const addFav = async (image) => {
     // adding to local array
@@ -159,6 +159,6 @@ export const usePostStore = defineStore("postStore", () => {
     addFav,
     delFav,
     allImages,
-    // likedImages,
+    likedImages,
   };
 });
