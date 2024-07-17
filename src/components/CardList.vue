@@ -7,10 +7,6 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  toggleLike: {
-    type: Function,
-    required: true,
-  },
 });
 
 onMounted(() => {
@@ -23,7 +19,6 @@ onMounted(() => {
     <CardItem
       v-for="image of images"
       v-bind:image="image"
-      v-bind:toggleLike="toggleLike"
       v-bind:key="image.id"
     />
   </div>

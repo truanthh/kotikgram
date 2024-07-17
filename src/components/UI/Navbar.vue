@@ -9,8 +9,9 @@ defineOptions({
 
 const debugging = () => {
   console.log(postStore.allImages);
+  console.log(postStore.images);
+  // console.log(postStore.images);
   // console.log(postStore.favourites);
-  console.log(postStore.likedImages);
 };
 
 const iconCompass = "src/assets/icons/compass.svg";

@@ -1,18 +1,13 @@
 <script setup>
 import { usePostStore } from "@/stores/PostStore";
 import { ref, computed } from "vue";
-
+import Popper from "vue3-popper";
 const postStore = usePostStore();
-
 const props = defineProps({
   image: {
     id: String,
     url: String,
     breeds: Array,
-  },
-  toggleLike: {
-    type: Function,
-    required: true,
   },
 });
 
@@ -26,9 +21,13 @@ const descExpandable = computed(() => {
   return isExpanded.value ? "desclong" : "descshort";
 });
 
-// const favAction = (image) => {
-//   return image.isLiked ? postStore.delFav(image) : postStore.addFav(image);
-// };
+const favAction = (image) => {
+  return image.isLiked ? postStore.delFav(image) : postStore.addFav(image);
+};
+
+const shareAction = (image) => {
+  navigator.clipboard.writeText(image.url);
+};
 </script>
 
 <template>
@@ -42,7 +41,7 @@ const descExpandable = computed(() => {
       </div>
 
       <div class="card__btns">
-        <div class="icon" @click="toggleLike(image)">
+        <div class="icon" @click="favAction(image)">
           <img
             class="hoveron"
             v-show="!postStore.isDark && !image.isLiked"
@@ -58,18 +57,25 @@ const descExpandable = computed(() => {
             <img v-show="image.isLiked" src="@/assets/icons/heart-filled.svg" />
           </Transition>
         </div>
-        <div class="icon">
-          <img
-            class="hoveron"
-            v-show="!postStore.isDark"
-            src="@/assets/icons/share.svg"
-          />
-          <img
-            class="hoveron"
-            v-show="postStore.isDark"
-            src="@/assets/icons/share-white.svg"
-          />
-        </div>
+        <Popper placement="top" zIndex="2">
+          <div class="icon" ref="shareBtn" @click="shareAction(image)">
+            <img
+              class="hoveron"
+              v-show="!postStore.isDark"
+              src="@/assets/icons/share.svg"
+            />
+            <img
+              class="hoveron"
+              v-show="postStore.isDark"
+              src="@/assets/icons/share-white.svg"
+            />
+          </div>
+          <template #content>
+            <div class="tooltip">
+              <div class="tooltip__text">Link copied!</div>
+            </div>
+          </template>
+        </Popper>
       </div>
 
       <div class="description">
@@ -123,6 +129,16 @@ const descExpandable = computed(() => {
   --card-titletext-color: white;
   --card-desclongtext-color: white;
   /* --card-descshorttext-color: white; */
+}
+
+.tooltip {
+  background-color: #333;
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  width: 75px;
 }
 
 .card {

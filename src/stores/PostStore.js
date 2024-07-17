@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive, toRaw, watch, computed } from "vue";
 import axios from "axios";
-import { addItems, getItems, hasItems } from "@/indexedDB";
+import { addItem, addItems, deleteItem, getItems, hasItems } from "@/indexedDB";
 
 export const usePostStore = defineStore("postStore", () => {
   const catApiKey =
@@ -18,37 +18,23 @@ export const usePostStore = defineStore("postStore", () => {
   const isDark = ref(false);
 
   const allImages = computed(() => {
-    return images.value.map((image) => {
-      const isLiked = favourites.value.some((fav) => {
-        return fav.image !== undefined ? fav.image.id === image.id : false;
-      });
-      return { ...image, isLiked };
-    });
-  });
-
-  const likedImages = computed(() => {
-    return favourites.value.map((fav) => ({
-      ...fav.image,
-      isLiked: true,
-      favID: fav.id,
+    return images.value.map((image) => ({
+      ...toRaw(image),
+      isLiked: favourites.value.some((fav) => fav.id === image.id),
     }));
   });
 
+  const favImages = computed(() => {
+    return favourites.value.reverse();
+  });
+
   const addFav = async (image) => {
-    // adding to local array
     image.isLiked = true;
+    favourites.value.push(image);
+    // console.log(image);
 
     try {
-      const response = await axios.post(
-        "https://api.thecatapi.com/v1/favourites",
-        { image_id: image.id },
-        { headers: { "x-api-key": catApiKey } },
-      );
-      favourites.value.push({
-        id: response.data.id,
-        image_id: image.id,
-        image: image,
-      });
+      await addItem(image);
     } catch (error) {
       alert(error);
     } finally {
@@ -56,50 +42,52 @@ export const usePostStore = defineStore("postStore", () => {
   };
 
   const delFav = async (image) => {
-    // deleting from local array
     image.isLiked = false;
-
+    favourites.value = favourites.value.filter((fav) => fav.id !== image.id);
     try {
-      const fav = favourites.value.find((el) => el.image.id === image.id);
-      await axios.delete(`https://api.thecatapi.com/v1/favourites/${fav.id}`, {
-        headers: { "x-api-key": catApiKey },
-      });
-      favourites.value = favourites.value.filter(
-        (fav) => fav.image.id !== image.id,
-      );
+      await deleteItem(image.id);
     } catch (error) {
       alert(error);
     } finally {
     }
   };
 
-  const fetchFavourites = async () => {
+  // const fetchFavourites = async () => {
+  //   try {
+  //     console.log("fetching favourites...");
+  //     const response = await axios.get(
+  //       "https://api.thecatapi.com/v1/favourites",
+  //       {
+  //         params: {
+  //           limit: 50,
+  //           order: "DESC",
+  //         },
+  //         headers: {
+  //           "x-api-key": catApiKey,
+  //         },
+  //       },
+  //     );
+  //     favourites.value = response.data;
+  //   } catch (error) {
+  //     alert(error);
+  //   } finally {
+  //   }
+  // };
+
+  const fetchFromIDB = async () => {
+    console.log("fetching from IDB...");
     try {
-      console.log("fetching favourites...");
-      const response = await axios.get(
-        "https://api.thecatapi.com/v1/favourites",
-        {
-          params: {
-            limit: 50,
-            order: "DESC",
-          },
-          headers: {
-            "x-api-key": catApiKey,
-          },
-        },
-      );
-      // favourites.value = response.data.map((el) => ({
-      //   ...el.image,
-      //   isLiked: true,
-      // }));
-      favourites.value = response.data;
+      // console.log("trying to fetch data from IDB");
+      const response = await getItems();
+      // console.log(response);
+      favourites.value = response;
     } catch (error) {
-      alert(error);
-    } finally {
+      console.log(error);
     }
   };
 
   const fetchImages = async () => {
+    console.log("fetching images...");
     try {
       const response = await axios.get(
         "https://api.thecatapi.com/v1/images/search",
@@ -107,7 +95,7 @@ export const usePostStore = defineStore("postStore", () => {
           params: {
             limit: 9,
             // has_breeds: 1,
-            // order: "RAND",
+            order: "DESC",
           },
           headers: {
             "x-api-key": catApiKey,
@@ -115,6 +103,13 @@ export const usePostStore = defineStore("postStore", () => {
         },
       );
       images.value = response.data;
+
+      // checking if fetched images have been already liked before
+      // by comparing id's images in IDB and in fetched data
+      // images.value = response.data.map((image) => ({
+      //   ...image,
+      //   isLiked: favourites.value.some((fav) => fav.id === image.id),
+      // }));
       // await addItems(toRaw(images.value));
     } catch (error) {
       alert(error);
@@ -122,26 +117,26 @@ export const usePostStore = defineStore("postStore", () => {
     }
   };
 
-  const fetchMoreImages = async () => {
-    try {
-      console.log("trying to get more images");
-      currentPage.value++;
-      const response = await axios.get(
-        "https://api.thecatapi.com/v1/images/search",
-        {
-          params: {
-            limit: postsPerPage,
-            // order: "DESC",
-            page: currentPage.value,
-          },
-        },
-      );
-      images.value = [...images.value, ...response.data];
-    } catch (error) {
-      alert(error);
-    } finally {
-    }
-  };
+  // const fetchMoreImages = async () => {
+  //   try {
+  //     console.log("trying to get more images");
+  //     currentPage.value++;
+  //     const response = await axios.get(
+  //       "https://api.thecatapi.com/v1/images/search",
+  //       {
+  //         params: {
+  //           limit: postsPerPage,
+  //           // order: "DESC",
+  //           page: currentPage.value,
+  //         },
+  //       },
+  //     );
+  //     images.value = [...images.value, ...response.data];
+  //   } catch (error) {
+  //     alert(error);
+  //   } finally {
+  //   }
+  // };
 
   const toggleDark = () => {
     isDark.value = !isDark.value;
@@ -153,12 +148,12 @@ export const usePostStore = defineStore("postStore", () => {
     //----------
     images,
     favourites,
-    fetchMoreImages,
+    // fetchMoreImages,
     fetchImages,
-    fetchFavourites,
     addFav,
     delFav,
+    fetchFromIDB,
     allImages,
-    likedImages,
+    favImages,
   };
 });

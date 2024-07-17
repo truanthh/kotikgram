@@ -6,21 +6,11 @@ const postStore = usePostStore();
 
 function debugging() {
   // console.log(postStore.favourites);
-  console.log(postStore.favourites);
+  // console.log(postStore.favourites);
 }
 
-const toggleLike = (image) => {
-  if (image.isLiked) {
-    // const fav = postStore.favourites.find((fav) => fav.image.id === image.id);
-    postStore.delFav(image);
-  } else {
-    postStore.addFav(image);
-  }
-};
-
 onMounted(() => {
-  postStore.fetchFavourites();
-  // const favouritesImages = postStore.favourites.map((el) => el.image);
+  // postStore.fetchFromIDB();
 });
 </script>
 
@@ -28,10 +18,7 @@ onMounted(() => {
   <div class="info">
     <!-- <h1>DISPLAY FAVOURITES HERE:</h1> -->
   </div>
-  <CardList
-    v-bind:images="postStore.likedImages"
-    v-bind:toggleLike="toggleLike"
-  />
+  <CardList v-bind:images="postStore.favImages" />
 </template>
 
 <style scoped>

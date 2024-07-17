@@ -29,6 +29,26 @@ export async function addItems(items) {
   await tx.done;
 }
 
+export async function addItem(item) {
+  const db = await initDB();
+  const tx = db.transaction(STORE_NAME, "readwrite");
+  const store = tx.objectStore(STORE_NAME);
+
+  await store.add(item);
+
+  await tx.done;
+}
+
+export async function deleteItem(id) {
+  const db = await initDB();
+  const tx = db.transaction(STORE_NAME, "readwrite");
+  const store = tx.objectStore(STORE_NAME);
+
+  await store.delete(id);
+
+  await tx.done;
+}
+
 export async function getItems() {
   const db = await initDB();
   return await db.getAll(STORE_NAME);
