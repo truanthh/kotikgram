@@ -1,16 +1,12 @@
 <script setup>
 import CardItem from "./CardItem.vue";
-import { onMounted } from "vue";
 
 const props = defineProps({
   images: {
     type: Array,
     required: true,
   },
-});
-
-onMounted(() => {
-  // console.log(images);
+  reverse: Boolean,
 });
 </script>
 
@@ -21,9 +17,6 @@ onMounted(() => {
       v-bind:image="image"
       v-bind:key="image.id"
     />
-  </div>
-  <div class="loading" v-show="images.length === 0">
-    Pictures are loading... :)
   </div>
 </template>
 
@@ -47,11 +40,5 @@ onMounted(() => {
     gap: 0rem;
     padding: 0rem;
   }
-}
-
-.loading {
-  font-size: 40px;
-  color: red;
-  text-align: center;
 }
 </style>

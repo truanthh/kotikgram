@@ -15,7 +15,12 @@ export const usePostStore = defineStore("postStore", () => {
   const currentPage = ref(1);
   const pagesTotal = ref(0);
 
-  const isDark = ref(false);
+  const isDark = ref(localStorage.getItem("theme") || false);
+
+  const toggleDark = () => {
+    isDark.value = !isDark.value;
+    localStorage.setItem("theme", isDark.value);
+  };
 
   const allImages = computed(() => {
     return images.value.map((image) => ({
@@ -24,13 +29,15 @@ export const usePostStore = defineStore("postStore", () => {
     }));
   });
 
-  const favImages = computed(() => {
-    return favourites.value.reverse();
-  });
+  // const favImages = computed(() => {
+  // return favourites.value.slice().sort((a,b) => );
+  // });
 
   const addFav = async (image) => {
     image.isLiked = true;
-    favourites.value.push(image);
+    image.likeDate = Date.now();
+    // favourites.value.push(image);
+    favourites.value.unshift(image);
     // console.log(image);
 
     try {
@@ -43,6 +50,7 @@ export const usePostStore = defineStore("postStore", () => {
 
   const delFav = async (image) => {
     image.isLiked = false;
+    image.likeDate = 0;
     favourites.value = favourites.value.filter((fav) => fav.id !== image.id);
     try {
       await deleteItem(image.id);
@@ -81,6 +89,7 @@ export const usePostStore = defineStore("postStore", () => {
       const response = await getItems();
       // console.log(response);
       favourites.value = response;
+      favourites.value.sort((a, b) => b.likeDate - a.likeDate);
     } catch (error) {
       console.log(error);
     }
@@ -93,9 +102,9 @@ export const usePostStore = defineStore("postStore", () => {
         "https://api.thecatapi.com/v1/images/search",
         {
           params: {
-            limit: 9,
+            limit: 10,
             // has_breeds: 1,
-            order: "DESC",
+            order: "RAND",
           },
           headers: {
             "x-api-key": catApiKey,
@@ -117,29 +126,25 @@ export const usePostStore = defineStore("postStore", () => {
     }
   };
 
-  // const fetchMoreImages = async () => {
-  //   try {
-  //     console.log("trying to get more images");
-  //     currentPage.value++;
-  //     const response = await axios.get(
-  //       "https://api.thecatapi.com/v1/images/search",
-  //       {
-  //         params: {
-  //           limit: postsPerPage,
-  //           // order: "DESC",
-  //           page: currentPage.value,
-  //         },
-  //       },
-  //     );
-  //     images.value = [...images.value, ...response.data];
-  //   } catch (error) {
-  //     alert(error);
-  //   } finally {
-  //   }
-  // };
-
-  const toggleDark = () => {
-    isDark.value = !isDark.value;
+  const fetchMoreImages = async () => {
+    try {
+      console.log("trying to get more images");
+      currentPage.value++;
+      const response = await axios.get(
+        "https://api.thecatapi.com/v1/images/search",
+        {
+          params: {
+            limit: postsPerPage,
+            // order: "DESC",
+            page: currentPage.value,
+          },
+        },
+      );
+      images.value = [...images.value, ...response.data];
+    } catch (error) {
+      alert(error);
+    } finally {
+    }
   };
 
   return {
@@ -148,12 +153,12 @@ export const usePostStore = defineStore("postStore", () => {
     //----------
     images,
     favourites,
-    // fetchMoreImages,
+    fetchMoreImages,
     fetchImages,
     addFav,
     delFav,
     fetchFromIDB,
     allImages,
-    favImages,
+    // favImages,
   };
 });

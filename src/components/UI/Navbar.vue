@@ -1,6 +1,7 @@
 <script setup>
 import { usePostStore } from "@/stores/PostStore";
 import { onMounted, ref } from "vue";
+import { getScrollPosition } from "@/scrollManager";
 const postStore = usePostStore();
 
 defineOptions({
@@ -8,14 +9,14 @@ defineOptions({
 });
 
 const debugging = () => {
-  console.log(postStore.allImages);
-  console.log(postStore.images);
-  // console.log(postStore.images);
-  // console.log(postStore.favourites);
+  // console.log(getScrollPosition("/home"));
+  console.log(postStore.favourites);
 };
 
-const iconCompass = "src/assets/icons/compass.svg";
-const iconCompassWhite = "src/assets/icons/compass-white.svg";
+// const iconCompass = "src/assets/icons/compass.svg";
+// const iconCompassWhite = "src/assets/icons/compass-white.svg";
+const iconNavHeart = "src/assets/icons/nav-heart.svg";
+const iconNavHeartWhite = "src/assets/icons/nav-heart-white.svg";
 const iconGithub = "src/assets/icons/github.svg";
 const iconGithubWhite = "src/assets/icons/github-white.svg";
 const iconMoon = "src/assets/icons/moon.svg";
@@ -30,11 +31,11 @@ const iconSun = "src/assets/icons/sun.svg";
       </div>
 
       <div class="navbar__btns">
-        <button @click="debugging">DEBUG</button>
+        <!-- <button @click="debugging">DEBUG</button> -->
 
         <img
-          class="compass"
-          :src="postStore.isDark ? iconCompassWhite : iconCompass"
+          class="favourites"
+          :src="postStore.isDark ? iconNavHeartWhite : iconNavHeart"
           @click="$router.push('/favourites')"
         />
         <!-- <img -->
@@ -59,8 +60,10 @@ const iconSun = "src/assets/icons/sun.svg";
 
     <!-- trying to preload this xd -->
     <div v-show="false" aria-hidden="true">
-      <img :src="iconCompassWhite" />
-      <img :src="iconCompass" />
+      <!-- <img :src="iconCompassWhite" /> -->
+      <!-- <img :src="iconCompass" /> -->
+      <img :src="iconNavHeartWhite" />
+      <img :src="iconNavHeart" />
       <img :src="iconMoon" />
       <img :src="iconSun" />
       <img :src="iconGithub" />
@@ -112,16 +115,23 @@ const iconSun = "src/assets/icons/sun.svg";
   /* margin-left: 10px; */
 }
 
-.compass {
-  height: 25px;
-  width: 25px;
+/* .compass { */
+/*   height: 25px; */
+/*   width: 25px; */
+/*   cursor: pointer; */
+/*   margin: auto; */
+/* } */
+
+.favourites {
+  height: 27px;
+  width: 27px;
   cursor: pointer;
   margin: auto;
 }
 
 .moon {
-  height: 25px;
-  width: 25px;
+  height: 23px;
+  width: 23px;
   cursor: pointer;
   margin: auto;
 }

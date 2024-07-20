@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-// import ExploreView from "../views/ExploreView.vue";
+import { ref } from "vue";
+import { saveScrollPosition } from "@/scrollManager";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +11,7 @@ const router = createRouter({
       alias: ["/"],
       name: "home",
       component: HomeView,
+      meta: { saveScrollPosition: true },
     },
     {
       path: "/explore",
@@ -20,6 +22,7 @@ const router = createRouter({
       path: "/favourites",
       name: "favourites",
       component: () => import("../views/FavouritesView.vue"),
+      meta: { saveScrollPosition: true },
     },
     {
       path: "/about",
@@ -29,12 +32,30 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
     },
-    // {
-    //   path: "*",
-    //   name: "home",
-    //   component: HomeView,
-    // },
   ],
+  // scrollBehavior(to, from, savedPosition) {
+  //   if (savedPosition) {
+  //     return savedPosition;
+  //   } else {
+  //     return { x: 0, y: 0 };
+  //   }
+  // },
 });
+
+router.beforeEach((to, from, next) => {
+  setTimeout(() => {
+    if (from.meta.saveScrollPosition) {
+      saveScrollPosition(from.path, window.scrollY);
+    }
+    next();
+  }, 0);
+});
+
+// router.beforeEach((to, from, next) => {
+//   setTimeout(() => {
+//     console.log(`going to ${to.name}`);
+//     next();
+//   }, 0);
+// });
 
 export default router;
