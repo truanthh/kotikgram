@@ -4,8 +4,7 @@ import axios from "axios";
 import { addItem, addItems, deleteItem, getItems, hasItems } from "@/indexedDB";
 
 export const usePostStore = defineStore("postStore", () => {
-  const catApiKey =
-    "live_42WMqpulkHdqY3krKopYktUseCHCREhVZZw2LfNnfkorDLEdarm0YzoYgdgU73y5";
+  const catApiKey = import.meta.env.VUE_APP_CATAPIKEY;
 
   const images = ref([]);
   const favourites = ref([]);
