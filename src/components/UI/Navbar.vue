@@ -15,12 +15,12 @@ const debugging = () => {
 
 // const iconCompass = "src/assets/icons/compass.svg";
 // const iconCompassWhite = "src/assets/icons/compass-white.svg";
-const iconNavHeart = "src/assets/icons/nav-heart.svg";
-const iconNavHeartWhite = "src/assets/icons/nav-heart-white.svg";
-const iconGithub = "src/assets/icons/github.svg";
-const iconGithubWhite = "src/assets/icons/github-white.svg";
-const iconMoon = "src/assets/icons/moon.svg";
-const iconSun = "src/assets/icons/sun.svg";
+const iconNavHeart = "assets/icons/nav-heart.svg";
+const iconNavHeartWhite = "assets/icons/nav-heart-white.svg";
+const iconGithub = "assets/icons/github.svg";
+const iconGithubWhite = "assets/icons/github-white.svg";
+const iconMoon = "assets/icons/moon.svg";
+const iconSun = "assets/icons/sun.svg";
 </script>
 
 <template>
