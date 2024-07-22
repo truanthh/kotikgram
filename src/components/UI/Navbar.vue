@@ -14,12 +14,12 @@ const debugging = () => {
 
 // const iconCompass = "src/assets/icons/compass.svg";
 // const iconCompassWhite = "src/assets/icons/compass-white.svg";
-const iconNavHeart = "kotikgram/src/assets/icons/nav-heart.svg";
-const iconNavHeartWhite = "kotikgram/src/assets/icons/nav-heart-white.svg";
-const iconGithub = "kotikgram/src/assets/icons/github.svg";
-const iconGithubWhite = "kotikgram/src/assets/icons/github-white.svg";
-const iconMoon = "kotikgram/src/assets/icons/moon.svg";
-const iconSun = "kotikgram/src/assets/icons/sun.svg";
+const iconNavHeart = "tree/main/src/assets/icons/nav-heart.svg";
+const iconNavHeartWhite = "tree/main/src/assets/icons/nav-heart-white.svg";
+const iconGithub = "tree/main/src/assets/icons/github.svg";
+const iconGithubWhite = "tree/main/src/assets/icons/github-white.svg";
+const iconMoon = "tree/main/src/assets/icons/moon.svg";
+const iconSun = "tree/main/src/assets/icons/sun.svg";
 </script>
 
 <template>
