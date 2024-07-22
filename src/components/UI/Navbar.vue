@@ -12,14 +12,19 @@ const debugging = () => {
   console.log(postStore.isDark);
 };
 
-// const iconCompass = "src/assets/icons/compass.svg";
-// const iconCompassWhite = "src/assets/icons/compass-white.svg";
-const iconNavHeart = "tree/main/src/assets/icons/nav-heart.svg";
-const iconNavHeartWhite = "tree/main/src/assets/icons/nav-heart-white.svg";
-const iconGithub = "tree/main/src/assets/icons/github.svg";
-const iconGithubWhite = "tree/main/src/assets/icons/github-white.svg";
-const iconMoon = "tree/main/src/assets/icons/moon.svg";
-const iconSun = "tree/main/src/assets/icons/sun.svg";
+const iconNavHeart = new URL("@/assets/icons/nav-heart.svg", import.meta.url)
+  .href;
+const iconNavHeartWhite = new URL(
+  "@/assets/icons/nav-heart-white.svg",
+  import.meta.url,
+).href;
+const iconGithub = new URL("@/assets/icons/github.svg", import.meta.url).href;
+const iconGithubWhite = new URL(
+  "@/assets/icons/github-white.svg",
+  import.meta.url,
+).href;
+const iconMoon = new URL("@/assets/icons/moon.svg", import.meta.url).href;
+const iconSun = new URL("@/assets/icons/sun.svg", import.meta.url).href;
 </script>
 
 <template>
@@ -30,7 +35,7 @@ const iconSun = "tree/main/src/assets/icons/sun.svg";
       </div>
 
       <div class="navbar__btns">
-        <button @click="debugging">DEBUG</button>
+        <!-- <button @click="debugging">DEBUG</button> -->
 
         <img
           class="favourites"
