@@ -1,0 +1,1 @@
+import{_ as s,i as t,c as o,o as a,p as c,h as _,a as p}from"./index-BOPtv8g0.js";const d=e=>(c("data-v-5f65380f"),e=e(),_(),e),r={class:"a"},f=d(()=>p("div",{class:"testflex"},"aleky",-1)),i=[f],n={__name:"AboutView",setup(e){return t(!1),(l,h)=>(a(),o("div",r,i))}},m=s(n,[["__scopeId","data-v-5f65380f"]]);export{m as default};
