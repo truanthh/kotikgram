@@ -14,11 +14,13 @@ export const usePostStore = defineStore("postStore", () => {
   const currentPage = ref(1);
   const pagesTotal = ref(0);
 
-  const isDark = ref(localStorage.getItem("theme") || false);
+  const isDark = ref(
+    JSON.parse(localStorage.getItem("theme-is-dark")) || false,
+  );
 
   const toggleDark = () => {
     isDark.value = !isDark.value;
-    localStorage.setItem("theme", isDark.value);
+    localStorage.setItem("theme-is-dark", isDark.value);
   };
 
   const allImages = computed(() => {
