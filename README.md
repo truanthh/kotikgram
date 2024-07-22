@@ -1,6 +1,6 @@
 # Kotikgram
 
-This is my first project. You get random pictures/gifs with cats. You can like/dislike some.
+You get random pictures/gifs with cats. You can like/dislike some.
 
 ## Some features
 
