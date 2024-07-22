@@ -30,16 +30,10 @@ export const usePostStore = defineStore("postStore", () => {
     }));
   });
 
-  // const favImages = computed(() => {
-  // return favourites.value.slice().sort((a,b) => );
-  // });
-
   const addFav = async (image) => {
     image.isLiked = true;
     image.likeDate = Date.now();
-    // favourites.value.push(image);
     favourites.value.unshift(image);
-    // console.log(image);
 
     try {
       await addItem(image);
@@ -60,28 +54,6 @@ export const usePostStore = defineStore("postStore", () => {
     } finally {
     }
   };
-
-  // const fetchFavourites = async () => {
-  //   try {
-  //     console.log("fetching favourites...");
-  //     const response = await axios.get(
-  //       "https://api.thecatapi.com/v1/favourites",
-  //       {
-  //         params: {
-  //           limit: 50,
-  //           order: "DESC",
-  //         },
-  //         headers: {
-  //           "x-api-key": catApiKey,
-  //         },
-  //       },
-  //     );
-  //     favourites.value = response.data;
-  //   } catch (error) {
-  //     alert(error);
-  //   } finally {
-  //   }
-  // };
 
   const fetchFromIDB = async () => {
     console.log("fetching from IDB...");
@@ -113,14 +85,6 @@ export const usePostStore = defineStore("postStore", () => {
         },
       );
       images.value = response.data;
-
-      // checking if fetched images have been already liked before
-      // by comparing id's images in IDB and in fetched data
-      // images.value = response.data.map((image) => ({
-      //   ...image,
-      //   isLiked: favourites.value.some((fav) => fav.id === image.id),
-      // }));
-      // await addItems(toRaw(images.value));
     } catch (error) {
       alert(error);
     } finally {
@@ -160,6 +124,5 @@ export const usePostStore = defineStore("postStore", () => {
     delFav,
     fetchFromIDB,
     allImages,
-    // favImages,
   };
 });

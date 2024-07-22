@@ -1,7 +1,7 @@
 import { openDB } from "idb";
 
 const DB_NAME = "maindb";
-const STORE_NAME = "imagesIDB";
+const STORE_NAME = "likedImages";
 
 export async function initDB() {
   const db = await openDB(DB_NAME, 1, {
