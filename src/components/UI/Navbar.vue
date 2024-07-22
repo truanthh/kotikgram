@@ -9,8 +9,6 @@ defineOptions({
 });
 
 const debugging = () => {
-  // console.log(getScrollPosition("/home"));
-  // console.log(postStore.favourites);
   console.log(postStore.isDark);
 };
 
