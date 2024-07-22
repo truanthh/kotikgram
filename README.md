@@ -1,29 +1,11 @@
-# testproject4
+# Kotikgram
 
-This template should help get you started developing with Vue 3 in Vite.
+This is my first project. You get random pictures/gifs with cats. You can like/dislike some
 
-## Recommended IDE Setup
+## Some features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+    Infinite scroll.
+    Mobile-first design.
+    Toggleable dark theme.
+    Shareable links.
+    Saving liked images to IndexedDB(stored locally in your browser).
