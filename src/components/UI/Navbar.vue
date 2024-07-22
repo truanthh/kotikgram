@@ -53,7 +53,7 @@ const iconSun = new URL("@/assets/icons/sun.svg", import.meta.url).href;
           @click="postStore.toggleDark"
         />
 
-        <a href="https://truanthh.github.io/kotikgram" target="_blank">
+        <a href="https://github.com/truanthh/kotikgram" target="_blank">
           <img
             class="github"
             :src="postStore.isDark ? iconGithubWhite : iconGithub"
