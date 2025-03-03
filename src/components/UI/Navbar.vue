@@ -1,6 +1,7 @@
 <script setup>
 import { usePostStore } from "@/stores/PostStore";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
+import { useRouter } from "vue-router";
 import { getScrollPosition } from "@/scrollManager";
 const postStore = usePostStore();
 
@@ -8,9 +9,23 @@ defineOptions({
   name: "Navbar",
 });
 
-const debugging = () => {
-  console.log(postStore.isDark);
-};
+const router = useRouter();
+
+// function debug() {
+//   console.log(router.currentRoute.value.name);
+// }
+
+const favClass = computed(() => {
+  if (router.currentRoute.value.name === "favourites") {
+    if (postStore.isDark) {
+      return "favourites light";
+    } else {
+      return "favourites dark";
+    }
+  }
+
+  return "favourites";
+});
 
 const iconNavHeart = new URL("@/assets/icons/nav-heart.svg", import.meta.url)
   .href;
@@ -35,27 +50,28 @@ const iconSun = new URL("@/assets/icons/sun.svg", import.meta.url).href;
       </div>
 
       <div class="navbar__btns">
-        <!-- <button @click="debugging">DEBUG</button> -->
-
-        <img
-          class="favourites"
-          :src="postStore.isDark ? iconNavHeartWhite : iconNavHeart"
-          @click="$router.push('/favourites')"
-        />
+        <div :class="favClass" @click="$router.push('/favourites')">
+          <img
+            class="favourites__img"
+            :src="postStore.isDark ? iconNavHeartWhite : iconNavHeart"
+          />
+        </div>
         <!-- <img -->
         <!--   class="compass" -->
         <!--   :src="postStore.isDark ? iconCompassWhite : iconCompass" -->
         <!--   @click="$router.push('/explore')" -->
         <!-- /> -->
-        <img
-          class="moon"
-          :src="postStore.isDark ? iconSun : iconMoon"
-          @click="postStore.toggleDark"
-        />
+        <div class="moon" @click="postStore.toggleDark">
+          <img class="moon__img" :src="postStore.isDark ? iconSun : iconMoon" />
+        </div>
 
-        <a href="https://github.com/truanthh/kotikgram" target="_blank">
+        <a
+          href="https://github.com/truanthh/kotikgram"
+          target="_blank"
+          class="github"
+        >
           <img
-            class="github"
+            class="github__img"
             :src="postStore.isDark ? iconGithubWhite : iconGithub"
           />
         </a>
@@ -107,8 +123,10 @@ const iconSun = new URL("@/assets/icons/sun.svg", import.meta.url).href;
   height: 40px;
   gap: 1rem;
   -webkit-user-select: none;
-  /* background-color: orange; */
+  -ms-user-select: none;
+  user-select: none;
   box-sizing: border-box;
+  align-items: center;
 }
 
 .navbar__logo {
@@ -129,22 +147,60 @@ const iconSun = new URL("@/assets/icons/sun.svg", import.meta.url).href;
 .favourites {
   height: 27px;
   width: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.favourites.dark::before {
+  content: "_";
+  font-size: 22px;
+  position: absolute;
+  bottom: -6px;
+  color: black;
+}
+
+.favourites.light::before {
+  content: "_";
+  font-size: 22px;
+  position: absolute;
+  bottom: -6px;
+  color: white;
+}
+
+.favourites__img {
+  height: 27px;
+  width: 27px;
   cursor: pointer;
-  margin: auto;
 }
 
 .moon {
+  height: 27px;
+  width: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moon__img {
   height: 23px;
   width: 23px;
   cursor: pointer;
-  margin: auto;
 }
 
 .github {
+  height: 27px;
+  width: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.github__img {
   height: 25px;
   width: 25px;
   cursor: pointer;
-  margin: auto;
 }
 
 a {
